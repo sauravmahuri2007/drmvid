@@ -136,6 +136,7 @@ VID_UPLOAD_PATH = os.path.join(UPLOAD_PATH, 'videos')
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
 }
