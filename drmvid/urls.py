@@ -13,9 +13,21 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from rest_framework import routers
+
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+
+from vid import views as vid_views
+
+
+router = routers.DefaultRouter()
+router.register(r'vid', vid_views.DRMVideoView, 'vid')
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/', include(router.urls)),
+    # following will allow to login using a simple html form
+    path('drf-auth', include('rest_framework.urls')),
 ]
