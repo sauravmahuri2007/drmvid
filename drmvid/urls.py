@@ -14,6 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from rest_framework import routers
+from rest_framework_simplejwt import views as jwt_views
 
 from django.contrib import admin
 from django.urls import path, include
@@ -28,6 +29,9 @@ router.register(r'vid', vid_views.DRMVideoView, 'vid')
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
+    path('api/token', jwt_views.TokenObtainPairView.as_view(), name='token'),
+    path('api/token/refresh', jwt_views.TokenRefreshView.as_view(),
+         name='token_refresh'),
     # following will allow to login using a simple html form
     path('drf-auth', include('rest_framework.urls')),
 ]
