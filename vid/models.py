@@ -34,8 +34,8 @@ def file_upload_path(instance, filename):
 class DRMVideo(models.Model):
     name = models.CharField(max_length=200, blank=False, null=False)
     description = models.TextField(max_length=200, blank=False, null=False)
-    video = models.FileField(upload_to=file_upload_path, null=False,
-                             storage=upload_storage, blank=False)
+    video = models.FileField(upload_to=file_upload_path, max_length=500,
+                             null=False, storage=upload_storage, blank=False)
     created_dtm = models.DateTimeField(auto_now_add=True)
 
     class Meta:
