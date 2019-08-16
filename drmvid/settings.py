@@ -130,6 +130,20 @@ STATIC_URL = '/static/'
 # Use this to upload any files
 UPLOAD_PATH = os.path.join(BASE_DIR, 'uploads')
 VID_UPLOAD_PATH = os.path.join(UPLOAD_PATH, 'videos')
+VID_ALLOWED_MIMETYPES = [
+    'video/mp4',
+    'video/x-matroska',
+    'video/mpeg',
+    'video/avi',
+    'video/msvideo',
+    'video/x-msvideo',
+]
+VID_ALLOWED_EXTENSIONS = [
+    'mp4',
+    'mkv',
+    'mpeg',
+    'avi',
+]
 
 
 # SimpleJWT settings

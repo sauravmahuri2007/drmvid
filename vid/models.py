@@ -2,8 +2,11 @@ import os
 
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
+from django.core.validators import FileExtensionValidator
 from django.db import models
 from django.utils.timezone import now
+
+from utils.validators import MimeTypeValidator
 
 # Helper functions
 
@@ -28,6 +31,22 @@ def file_upload_path(instance, filename):
     new_name = '{0}_{1}{2}'.format(instance.name, current_time, ext)
     return os.path.join(current_date, new_name)
 
+def mime_validator(value):
+    if hasattr(settings, 'VID_ALLOWED_MIMETYPES'):
+        allowed_mimetypes = settings.VID_ALLOWED_MIMETYPES
+    else:
+        allowed_mimetypes = []
+    validator = MimeTypeValidator(allowed_mimetypes=allowed_mimetypes)
+    return validator(value)
+
+def extension_validator(value):
+    if hasattr(settings, 'VID_ALLOWED_EXTENSIONS'):
+        allowed_extensions = settings.VID_ALLOWED_EXTENSIONS
+    else:
+        allowed_extensions = []
+    validator = FileExtensionValidator(allowed_extensions=allowed_extensions)
+    return validator(value)
+
 
 # Create your models here.
 
@@ -35,7 +54,8 @@ class DRMVideo(models.Model):
     name = models.CharField(max_length=200, blank=False, null=False)
     description = models.TextField(max_length=200, blank=False, null=False)
     video = models.FileField(upload_to=file_upload_path, max_length=500,
-                             null=False, storage=upload_storage, blank=False)
+                             null=False, storage=upload_storage, blank=False,
+                             validators=[extension_validator, mime_validator])
     created_dtm = models.DateTimeField(auto_now_add=True)
 
     class Meta:
