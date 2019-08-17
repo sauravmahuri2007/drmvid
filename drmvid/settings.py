@@ -181,7 +181,6 @@ VID_ALLOWED_EXTENSIONS = [
     'mpeg',
     'avi',
 ]
-VIDEO_ENCODING_THREADS = 4
 VIDEO_ENCODING_FORMATS = {
     'FFmpeg': [
         {
@@ -194,16 +193,16 @@ VIDEO_ENCODING_FORMATS = {
                 '-codec:a', 'libvorbis', '-b:a', '128k', '-f', 'webm',
            ],
         },
-        # {
-        #     'name': 'mp4_sd',
-        #     'extension': 'mp4',
-        #     'params': [
-        #         '-codec:v', 'libx264', '-crf', '20', '-preset', 'medium',
-        #         '-b:v', '1000k', '-maxrate', '1000k', '-bufsize', '2000k',
-        #         '-vf', 'scale=-2:480',
-        #         '-codec:a', 'aac', '-b:a', '128k', '-strict', '-2',
-        #     ],
-        # },
+        {
+            'name': 'mp4_sd',
+            'extension': 'mp4',
+            'params': [
+                '-codec:v', 'libx264', '-crf', '20', '-preset', 'medium',
+                '-b:v', '1000k', '-maxrate', '1000k', '-bufsize', '2000k',
+                '-vf', 'scale=-2:480',
+                '-codec:a', 'aac', '-b:a', '128k', '-strict', '-2',
+            ],
+        },
         # {
         #     'name': 'webm_hd',
         #     'extension': 'webm',

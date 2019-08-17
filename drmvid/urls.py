@@ -24,6 +24,7 @@ from vid import views as vid_views
 
 router = routers.DefaultRouter()
 router.register(r'vid', vid_views.DRMVideoView, 'vid')
+router.register(r'format', vid_views.FormatVideoView, 'format')
 
 
 urlpatterns = [
