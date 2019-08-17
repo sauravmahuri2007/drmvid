@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # 3rd party apps
     'rest_framework',
+    'video_encoding',
+    'django_rq',
     # drmvid apps
     'vid',
 ]
@@ -83,6 +85,41 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
+}
+
+RQ_QUEUES = {
+    'default': {
+        'HOST': 'localhost',
+        'PORT': 6379,
+        'DB': 0,
+        'PASSWORD': '',
+        # make sure that timeout is long enough to
+        # convert even very large videos
+        'DEFAULT_TIMEOUT': 3600,  # 1 Hour in seconds
+    },
+    # 'with-sentinel': {
+    #     'SENTINELS': [('localhost', 26736), ('localhost', 26737)],
+    #     'MASTER_NAME': 'redismaster',
+    #     'DB': 0,
+    #     'PASSWORD': '',
+    #     'SOCKET_TIMEOUT': None,
+    #     'CONNECTION_KWARGS': {
+    #         'socket_connect_timeout': 0.3
+    #     },
+    # },
+    # 'high': {
+    #     # 'URL': os.getenv('REDISTOGO_URL', 'redis://localhost:6379/0'), # If you're on Heroku
+    #     # 'HOST': 'localhost',
+    #     # 'PORT': 6379,
+    #     # 'DB': 0,
+    #     'DEFAULT_TIMEOUT': 500,
+    # },
+    # 'low': {
+    #     # 'HOST': 'localhost',
+    #     # 'PORT': 6379,
+    #     # 'DB': 0,
+    #     'DEFAULT_TIMEOUT': 100,
+    # }
 }
 
 
@@ -144,6 +181,51 @@ VID_ALLOWED_EXTENSIONS = [
     'mpeg',
     'avi',
 ]
+VIDEO_ENCODING_THREADS = 4
+VIDEO_ENCODING_FORMATS = {
+    'FFmpeg': [
+        {
+            'name': 'webm_sd',
+            'extension': 'webm',
+            'params': [
+                '-b:v', '1000k', '-maxrate', '1000k', '-bufsize', '2000k',
+                '-codec:v', 'libvpx', '-r', '24',
+                '-vf', 'scale=-1:480', '-qmin', '10', '-qmax', '42',
+                '-codec:a', 'libvorbis', '-b:a', '128k', '-f', 'webm',
+           ],
+        },
+        # {
+        #     'name': 'mp4_sd',
+        #     'extension': 'mp4',
+        #     'params': [
+        #         '-codec:v', 'libx264', '-crf', '20', '-preset', 'medium',
+        #         '-b:v', '1000k', '-maxrate', '1000k', '-bufsize', '2000k',
+        #         '-vf', 'scale=-2:480',
+        #         '-codec:a', 'aac', '-b:a', '128k', '-strict', '-2',
+        #     ],
+        # },
+        # {
+        #     'name': 'webm_hd',
+        #     'extension': 'webm',
+        #     'params': [
+        #         '-codec:v', 'libvpx',
+        #         '-b:v', '3000k', '-maxrate', '3000k', '-bufsize', '6000k',
+        #         '-vf', 'scale=-1:720', '-qmin', '11', '-qmax', '51',
+        #         '-acodec', 'libvorbis', '-b:a', '128k', '-f', 'webm',
+        #     ],
+        # },
+        # {
+        #     'name': 'mp4_hd',
+        #     'extension': 'mp4',
+        #     'params': [
+        #         '-codec:v', 'libx264', '-crf', '20', '-preset', 'medium',
+        #         '-b:v', '3000k', '-maxrate', '3000k', '-bufsize', '6000k',
+        #         '-vf', 'scale=-2:720',
+        #         '-codec:a', 'aac', '-b:a', '128k', '-strict', '-2',
+        #     ],
+        # },
+     ]
+}
 
 
 # SimpleJWT settings

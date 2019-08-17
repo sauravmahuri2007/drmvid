@@ -34,4 +34,5 @@ urlpatterns = [
          name='token_refresh'),
     # following will allow to login using a simple html form
     path('drf-auth', include('rest_framework.urls')),
+    path('django-rq/', include('django_rq.urls')),
 ]

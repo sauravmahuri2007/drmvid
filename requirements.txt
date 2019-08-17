@@ -1,7 +1,16 @@
+Click==7.0
 Django==2.2.4
+django-appconf==1.0.3
+django-rq==2.1.0
+django-video-encoding==0.4.0
 djangorestframework==3.10.2
 djangorestframework-simplejwt==4.3.0
+Pillow==5.4.1
 PyJWT==1.7.1
 python-magic==0.4.15
 pytz==2019.2
+redis==3.3.7
+rq==1.1.0
+shutilwhich==1.1.0
+six==1.12.0
 sqlparse==0.3.0

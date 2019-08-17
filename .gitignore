@@ -2,3 +2,5 @@ db.sqlite3
 *.pyc
 uploads/
 videnv/
+.vscode/
+formats/
